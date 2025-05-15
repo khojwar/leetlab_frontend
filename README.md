@@ -71,6 +71,18 @@ doc link: https://reactrouter.com/start/declarative/installation
 
 
 
+### install axios and zustand
+
+    npm i axios zustand
+
+### install react-hot-toast
+
+    npm i react-hot-toast
+
+
+
+
+
 
 
 

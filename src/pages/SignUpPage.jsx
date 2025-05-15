@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { Code, Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
 import { z } from "zod";
 import AuthImagePattern from '../components/AuthImagePattern'
+import { useAuthStore } from '../store/useAuthStore'
 
 const signUpSchema = z.object({
     email: z.string().email("Enter a valid email"),
@@ -16,12 +17,25 @@ const SignUpPage = () => {
 
     const [showPassword, setShowPassword] = useState(false)
 
+    const {signup, isSigninUp} = useAuthStore();
+
+
     const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: zodResolver(signUpSchema)
     });
 
     const onSubmit = async (data) => {
-        console.log(data);
+        try {
+          await signup(data)
+          console.log("Signup data: ", data);
+          
+          
+        } catch (error) {
+          console.log("SignUp failed", error);
+          
+        }
+
+
         
     }
 
@@ -113,22 +127,21 @@ const SignUpPage = () => {
         </div>
 
         {/* Submit Button */}
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
-            //  disabled={isSigninUp}
-            >
-                signIn
-               {/* {isSigninUp ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Loading...
-                </>
-              ) : (
-                "Sign in"
-              )} */}
-            </button>
-        </form>
+        <button
+          type="submit"
+          className="btn btn-primary w-full"
+          disabled={isSigninUp}
+        >
+            {isSigninUp ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              Loading...
+            </>
+          ) : (
+            "Sign up"
+          )}
+        </button>
+      </form>
 
         {/* Footer */}
           <div className="text-center">

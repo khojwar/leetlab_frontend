@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { Code, Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
 import { z } from "zod";
 import AuthImagePattern from '../components/AuthImagePattern'
+import { useAuthStore } from '../store/useAuthStore'
 
 const LoginSchema = z.object({
     email: z.string().email("Enter a valid email"),
@@ -12,6 +13,7 @@ const LoginSchema = z.object({
 })
 
 const LoginPage = () => {
+   const {isLoggingIn, login} = useAuthStore();
 
     const [showPassword, setShowPassword] = useState(false)
 
@@ -20,7 +22,11 @@ const LoginPage = () => {
     });
 
     const onSubmit = async (data) => {
-        console.log(data);
+        try {
+          await login(data)
+        } catch (error) {
+          console.error("Signup failed: ", error) 
+        }
         
     }
 
@@ -36,7 +42,7 @@ const LoginPage = () => {
               <Code className="w-6 h-6 text-primary" />
             </div>
             <h1 className="text-2xl font-bold mt-2">Welcome Back </h1>
-            <p className="text-base-content/60">SignIn to your account</p>
+            <p className="text-base-content/60">login to your account</p>
           </div>
         </div>
 
@@ -91,13 +97,21 @@ const LoginPage = () => {
             {errors.password && (<p className="text-red-500 text-sm mt-1">{errors.password.message}</p>)}
         </div>
 
-        {/* Submit Button */}
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
-            >
-                Login
-            </button>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="btn btn-primary w-full"
+            disabled={isLoggingIn}
+          >
+              {isLoggingIn ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Sign in"
+            )}
+          </button>
         </form>
 
         {/* Footer */}

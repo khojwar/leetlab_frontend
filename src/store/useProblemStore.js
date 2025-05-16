@@ -3,14 +3,14 @@ import {axiosInstance} from '../lib/axios'
 import {toast} from 'react-hot-toast'
 
 
-const useProblemStore = create((set) => ({
+export const useProblemStore = create((set) => ({
     problems: [],
     problem: null,
     solvedProblems: [],
     isProblemsLoading: false,
     isProblemLoading: false,
 
-    getAllProblem: async () => {
+    getAllProblems: async () => {
         try {
             set({isProblemsLoading: true})
 

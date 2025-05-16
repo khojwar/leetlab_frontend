@@ -80,8 +80,11 @@ doc link: https://reactrouter.com/start/declarative/installation
     npm i react-hot-toast
 
 
+### install monaco-editor/react
 
+    npm i @monaco-editor/react
 
+- Monaco Editor is the code editor that powers VS Code. 
 
 
 
